@@ -12,7 +12,6 @@ from src.config import RESEARCH_TOPIC, Settings
 from src.dedup import normalize_doi, normalize_title, paper_key
 from src.models import ALLOWED_SECTIONS, EnrichedPaper, Paper
 
-
 LOGGER = logging.getLogger(__name__)
 CJK_PATTERN = re.compile(r"[\u3400-\u9fff]")
 
@@ -146,7 +145,8 @@ def _section_for(paper: Paper) -> str:
     text = f"{paper.title} {paper.abstract}".casefold()
     if any(term in text for term in ("model", "modelling", "framework", "模型")):
         return ALLOWED_SECTIONS[3]
-    if any(term in text for term in ("stormflow", "interflow", "runoff generation", "壤中流", "产流")):
+    event_terms = ("stormflow", "interflow", "runoff generation", "壤中流", "产流")
+    if any(term in text for term in event_terms):
         return ALLOWED_SECTIONS[2]
     if any(term in text for term in ("preferential", "macropore", "pathway", "优先流", "大孔隙")):
         return ALLOWED_SECTIONS[1]
@@ -252,7 +252,10 @@ def enrich_and_select(
     if client is None and not settings.openai_api_key:
         LOGGER.warning("OPENAI_API_KEY is not configured; using local enrichment fallback")
         return [fallback_enrich(paper) for paper in selected_candidates[:target_count]]
-    model_client = client or OpenAI(api_key=settings.openai_api_key, timeout=settings.http_timeout[1])
+    model_client = client or OpenAI(
+        api_key=settings.openai_api_key,
+        timeout=settings.http_timeout[1],
+    )
     prompt = _prompt(selected_candidates, target_count)
     for attempt in range(2):
         try:

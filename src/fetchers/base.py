@@ -10,7 +10,6 @@ from urllib3.util.retry import Retry
 from src.config import Settings
 from src.models import Paper, Slot
 
-
 USER_AGENT = "literature-push-agent/0.1 (+https://github.com/Qian-xh/literature-push-agent)"
 CORE_QUERY = (
     '"hillslope hydrology" OR "root soil" OR "preferential flow" OR '

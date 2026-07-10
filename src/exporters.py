@@ -16,7 +16,6 @@ from src.dedup import normalize_doi, normalize_title, paper_key
 from src.fetchers.base import build_session
 from src.models import EnrichedPaper, Slot
 
-
 LOGGER = logging.getLogger(__name__)
 CSV_FIELDS = [
     "title",
@@ -70,6 +69,12 @@ def render_html(papers: Sequence[EnrichedPaper], slot: Slot, today: date) -> str
         )
         stars = "★" * paper.priority + "☆" * (5 - paper.priority)
         keywords = "、".join(paper.keywords)
+        safe_journal = html.escape(paper.journal or "暂缺")
+        safe_doi = html.escape(normalize_doi(paper.doi) or "暂缺")
+        safe_summary = html.escape(paper.summary_zh)
+        safe_reason = html.escape(paper.why_read)
+        safe_section = html.escape(paper.dissertation_section)
+        safe_group = html.escape(paper.endnote_group)
         cards.append(
             f"""
             <section style="background:#ffffff;border:1px solid #dbe5ec;border-radius:10px;
@@ -78,20 +83,24 @@ def render_html(papers: Sequence[EnrichedPaper], slot: Slot, today: date) -> str
               <h2 style="font-size:19px;line-height:1.45;margin:5px 0 8px;color:#14364a">
                 {html.escape(paper.title)}</h2>
               <p style="margin:5px 0;color:#415462">{html.escape(authors)}（{year}）</p>
-              <p style="margin:5px 0"><strong>期刊/来源：</strong>{html.escape(paper.journal or '暂缺')}</p>
-              <p style="margin:5px 0"><strong>DOI：</strong>{html.escape(normalize_doi(paper.doi) or '暂缺')} · {link}{oa_link}</p>
-              <p style="margin:10px 0 5px"><strong>核心内容：</strong>{html.escape(paper.summary_zh)}</p>
-              <p style="margin:5px 0"><strong>为什么值得读：</strong>{html.escape(paper.why_read)}</p>
-              <p style="margin:5px 0"><strong>对应论文章节：</strong>{html.escape(paper.dissertation_section)}</p>
-              <p style="margin:5px 0"><strong>阅读优先级：</strong><span style="color:#df8b17">{stars}</span></p>
+              <p style="margin:5px 0"><strong>期刊/来源：</strong>{safe_journal}</p>
+              <p style="margin:5px 0"><strong>DOI：</strong>
+                {safe_doi} · {link}{oa_link}</p>
+              <p style="margin:10px 0 5px"><strong>核心内容：</strong>
+                {safe_summary}</p>
+              <p style="margin:5px 0"><strong>为什么值得读：</strong>{safe_reason}</p>
+              <p style="margin:5px 0"><strong>对应论文章节：</strong>{safe_section}</p>
+              <p style="margin:5px 0"><strong>阅读优先级：</strong>
+                <span style="color:#df8b17">{stars}</span></p>
               <p style="margin:5px 0"><strong>推荐关键词：</strong>{html.escape(keywords)}</p>
-              <p style="margin:5px 0"><strong>建议 EndNote 分组：</strong>{html.escape(paper.endnote_group)}</p>
+              <p style="margin:5px 0"><strong>建议 EndNote 分组：</strong>{safe_group}</p>
             </section>
             """
         )
     return f"""<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"></head>
-<body style="margin:0;background:#f3f7f9;font-family:Arial,'Microsoft YaHei',sans-serif;color:#243746">
+<body style="margin:0;background:#f3f7f9;
+  font-family:Arial,'Microsoft YaHei',sans-serif;color:#243746">
   <main style="max-width:760px;margin:auto;padding:24px">
     <header style="background:#174f6d;color:white;border-radius:12px;padding:22px">
       <h1 style="margin:0;font-size:25px">{SLOT_LABELS[slot]}｜{today.isoformat()}</h1>
@@ -175,6 +184,10 @@ def write_bibtex(papers: Sequence[EnrichedPaper], path: Path) -> Path:
     path.parent.mkdir(parents=True, exist_ok=True)
     records: list[str] = []
     for paper in papers:
+        note_value = (
+            f"{paper.dissertation_section}; priority {paper.priority}/5; "
+            f"{paper.endnote_group}"
+        )
         fields = {
             "title": paper.title,
             "author": " and ".join(paper.authors),
@@ -184,7 +197,7 @@ def write_bibtex(papers: Sequence[EnrichedPaper], path: Path) -> Path:
             "url": _citation_url(paper),
             "abstract": paper.summary_zh,
             "keywords": ", ".join(paper.keywords),
-            "note": f"{paper.dissertation_section}; priority {paper.priority}/5; {paper.endnote_group}",
+            "note": note_value,
         }
         rendered = ",\n".join(
             f"  {name} = {{{_bibtex_escape(value)}}}" for name, value in fields.items() if value

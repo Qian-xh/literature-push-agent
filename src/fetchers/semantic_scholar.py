@@ -11,7 +11,6 @@ from src.dedup import normalize_doi
 from src.fetchers.base import CORE_QUERY, build_session
 from src.models import Paper, Slot
 
-
 LOGGER = logging.getLogger(__name__)
 
 

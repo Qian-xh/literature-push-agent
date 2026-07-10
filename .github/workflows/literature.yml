@@ -1,0 +1,107 @@
+name: Literature Push Agent
+
+on:
+  schedule:
+    # Beijing 09:00, 14:30, and 19:30 (UTC+8).
+    - cron: "0 1 * * *"
+    - cron: "30 6 * * *"
+    - cron: "30 11 * * *"
+  workflow_dispatch:
+    inputs:
+      slot:
+        description: Delivery slot to run
+        required: true
+        default: morning
+        type: choice
+        options:
+          - morning
+          - afternoon
+          - evening
+
+permissions:
+  contents: write
+
+concurrency:
+  group: literature-push-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  literature-push:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: python -m pip install --disable-pip-version-check -r requirements.txt
+
+      - name: Run unit tests
+        run: python -m pytest -v
+
+      - name: Run static checks
+        run: python -m ruff check .
+
+      - name: Determine delivery slot
+        id: slot
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          MANUAL_SLOT: ${{ inputs.slot }}
+          SCHEDULE: ${{ github.event.schedule }}
+        run: |
+          if [[ "$EVENT_NAME" == "workflow_dispatch" ]]; then
+            slot="$MANUAL_SLOT"
+          else
+            case "$SCHEDULE" in
+              "0 1 * * *") slot="morning" ;;
+              "30 6 * * *") slot="afternoon" ;;
+              "30 11 * * *") slot="evening" ;;
+              *) echo "Unknown schedule: $SCHEDULE" >&2; exit 2 ;;
+            esac
+          fi
+          echo "Selected slot: $slot"
+          echo "slot=$slot" >> "$GITHUB_OUTPUT"
+
+      - name: Run literature agent
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          RECIPIENT_EMAIL: ${{ vars.RECIPIENT_EMAIL || 'qxh.igsnrr@gmail.com' }}
+          OPENAI_MODEL: ${{ vars.OPENAI_MODEL || 'gpt-4.1-mini' }}
+          MAX_PAPERS: ${{ vars.MAX_PAPERS || '5' }}
+          DOWNLOAD_OA_PDF: ${{ vars.DOWNLOAD_OA_PDF || 'false' }}
+        run: python -m src.main --slot "${{ steps.slot.outputs.slot }}"
+
+      - name: Upload exports and logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: literature-${{ steps.slot.outputs.slot || 'failed' }}-${{ github.run_id }}
+          path: output/
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Commit updated delivery history
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/history.json
+          if git diff --cached --quiet; then
+            echo "History is unchanged; skipping commit."
+          else
+            git commit -m "chore: update literature delivery history"
+            git push
+          fi
+

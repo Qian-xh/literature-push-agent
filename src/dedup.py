@@ -6,7 +6,6 @@ from dataclasses import replace
 
 from src.models import Paper
 
-
 DOI_PREFIX = re.compile(r"^(?:https?://(?:dx\.)?doi\.org/|doi:\s*)", re.IGNORECASE)
 
 

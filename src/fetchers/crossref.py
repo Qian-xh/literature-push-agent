@@ -11,7 +11,6 @@ from src.config import Settings
 from src.fetchers.base import CORE_QUERY, build_session
 from src.models import Paper, Slot
 
-
 LOGGER = logging.getLogger(__name__)
 TAG_PATTERN = re.compile(r"<[^>]+>")
 
@@ -29,7 +28,11 @@ def _published(item: dict[str, Any]) -> date | None:
             continue
         values = [int(value) for value in parts[0]]
         try:
-            return date(values[0], values[1] if len(values) > 1 else 1, values[2] if len(values) > 2 else 1)
+            return date(
+                values[0],
+                values[1] if len(values) > 1 else 1,
+                values[2] if len(values) > 2 else 1,
+            )
         except (ValueError, TypeError):
             continue
     return None
@@ -107,4 +110,3 @@ class CrossrefFetcher:
             work_type=str(item.get("subtype") or item.get("type") or "article"),
             sources=["crossref"],
         )
-

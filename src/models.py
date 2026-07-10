@@ -2,9 +2,8 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
 from datetime import date
-from enum import Enum
+from enum import StrEnum
 from typing import Any
-
 
 ALLOWED_SECTIONS: tuple[str, ...] = (
     "3.1 根土复合体结构异质性及连通性表征",
@@ -14,7 +13,7 @@ ALLOWED_SECTIONS: tuple[str, ...] = (
 )
 
 
-class Slot(str, Enum):
+class Slot(StrEnum):
     MORNING = "morning"
     AFTERNOON = "afternoon"
     EVENING = "evening"
@@ -52,7 +51,9 @@ class EnrichedPaper(Paper):
             raise ValueError("dissertation_section must be one of the allowed sections")
         if not 1 <= self.priority <= 5:
             raise ValueError("priority must be an integer from 1 to 5")
-        if not self.keywords or not all(isinstance(value, str) and value.strip() for value in self.keywords):
+        if not self.keywords or not all(
+            isinstance(value, str) and value.strip() for value in self.keywords
+        ):
             raise ValueError("keywords must contain non-empty strings")
 
     @classmethod
@@ -142,4 +143,3 @@ class History:
             },
             "deliveries": [item.to_dict() for item in self.deliveries],
         }
-

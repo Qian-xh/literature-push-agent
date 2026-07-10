@@ -22,7 +22,6 @@ from src.mailer import build_message, send_email
 from src.models import EnrichedPaper, Paper, Slot
 from src.ranking import rank_papers
 
-
 LOGGER = logging.getLogger(__name__)
 
 
@@ -68,7 +67,12 @@ def _ensure_delivery_count(
     return result
 
 
-def _collect(fetchers: Sequence[Fetcher], slot: Slot, settings: Settings, today: date) -> list[Paper]:
+def _collect(
+    fetchers: Sequence[Fetcher],
+    slot: Slot,
+    settings: Settings,
+    today: date,
+) -> list[Paper]:
     candidates: list[Paper] = []
     for fetcher in fetchers:
         try:

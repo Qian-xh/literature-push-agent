@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Sequence
 from datetime import date, timedelta
 from pathlib import Path
-from typing import Sequence
 
 from src.dedup import paper_key
 from src.models import Delivery, History, Paper, RecommendationRecord, Slot

@@ -8,7 +8,6 @@ from src.dedup import paper_key
 from src.history import eligible
 from src.models import History, Paper, Slot
 
-
 CONCEPTS: tuple[tuple[str, ...], ...] = (
     ("root soil", "root-soil", "root–soil", "根土"),
     ("preferential flow", "优先流"),
