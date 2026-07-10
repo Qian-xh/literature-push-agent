@@ -40,12 +40,12 @@ def test_workflow_has_permissions_timeout_tests_artifacts_and_history_commit() -
     assert job["timeout-minutes"] <= 30
     steps = job["steps"]
     text = WORKFLOW.read_text(encoding="utf-8")
-    assert any(step.get("uses", "").startswith("actions/checkout@") for step in steps)
-    assert any(step.get("uses", "").startswith("actions/setup-python@") for step in steps)
+    assert any(step.get("uses") == "actions/checkout@v7" for step in steps)
+    assert any(step.get("uses") == "actions/setup-python@v6" for step in steps)
     assert "python -m pytest" in text
     assert "python -m ruff check" in text
     assert "python -m src.main" in text
-    assert "actions/upload-artifact" in text
+    assert "actions/upload-artifact@v7" in text
     assert "if: always()" in text
     assert "data/history.json" in text
     assert "git push" in text
