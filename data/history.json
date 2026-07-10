@@ -1,5 +1,37 @@
 {
   "version": 1,
-  "ever_recommended": {},
-  "deliveries": []
+  "ever_recommended": {
+    "doi:10.1007/s44372-026-00708-8": {
+      "first_recommended": "2026-07-11",
+      "last_recommended": "2026-07-11",
+      "count": 1
+    },
+    "doi:10.3389/fpls.2026.1862550": {
+      "first_recommended": "2026-07-11",
+      "last_recommended": "2026-07-11",
+      "count": 1
+    },
+    "doi:10.5194/egusphere-2026-3781": {
+      "first_recommended": "2026-07-11",
+      "last_recommended": "2026-07-11",
+      "count": 1
+    }
+  },
+  "deliveries": [
+    {
+      "key": "doi:10.3389/fpls.2026.1862550",
+      "date": "2026-07-11",
+      "slot": "morning"
+    },
+    {
+      "key": "doi:10.1007/s44372-026-00708-8",
+      "date": "2026-07-11",
+      "slot": "morning"
+    },
+    {
+      "key": "doi:10.5194/egusphere-2026-3781",
+      "date": "2026-07-11",
+      "slot": "morning"
+    }
+  ]
 }
