@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "literature-push-agent"
+version = "0.1.0"
+description = "Scheduled research literature discovery and email delivery agent"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "openai>=1.68.0,<3",
+    "requests>=2.32.3,<3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "PyYAML>=6.0.2,<7",
+    "pytest>=8.3.5,<10",
+    "ruff>=0.11.0,<1",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+
