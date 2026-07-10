@@ -9,7 +9,6 @@ from src.history import load_history
 from src.main import Dependencies, run
 from src.models import Paper, Slot
 
-
 TODAY = date(2026, 7, 10)
 
 

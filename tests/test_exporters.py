@@ -45,7 +45,20 @@ def enriched_paper(**overrides: Any) -> EnrichedPaper:
 def test_ris_contains_required_fields_and_note(tmp_path: Path) -> None:
     path = write_ris([enriched_paper()], tmp_path / "papers.ris")
     text = path.read_text(encoding="utf-8")
-    for tag in ("TY  -", "TI  -", "AU  -", "PY  -", "JO  -", "DO  -", "UR  -", "AB  -", "KW  -", "N1  -", "ER  -"):
+    required_tags = (
+        "TY  -",
+        "TI  -",
+        "AU  -",
+        "PY  -",
+        "JO  -",
+        "DO  -",
+        "UR  -",
+        "AB  -",
+        "KW  -",
+        "N1  -",
+        "ER  -",
+    )
+    for tag in required_tags:
         assert tag in text
     assert "3.2 根系调控下坡面多路径水分传输过程" in text
     assert "优先级：4/5" in text

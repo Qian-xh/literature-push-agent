@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import date
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 import pytest
 
@@ -12,7 +12,7 @@ from src.models import Slot
 
 
 class FakeSMTP:
-    instances: list[FakeSMTP] = []
+    instances: ClassVar[list[FakeSMTP]] = []
 
     def __init__(self, host: str, port: int, timeout: float) -> None:
         self.host = host
@@ -63,7 +63,7 @@ def test_build_message_has_slot_subject_html_and_attachments(tmp_path: Path) -> 
 
 def test_missing_gmail_credentials_has_actionable_error() -> None:
     message = build_message(Settings(), Slot.AFTERNOON, date(2026, 7, 10), "<p>x</p>", [])
-    with pytest.raises(ConfigurationError, match="GMAIL_ADDRESS.*GMAIL_APP_PASSWORD"):
+    with pytest.raises(ConfigurationError, match=r"GMAIL_ADDRESS.*GMAIL_APP_PASSWORD"):
         send_email(Settings(), message, smtp_factory=FakeSMTP)
 
 
@@ -76,4 +76,3 @@ def test_send_email_uses_gmail_smtp_ssl_login() -> None:
     assert (smtp.host, smtp.port, smtp.timeout) == ("smtp.gmail.com", 465, 12)
     assert smtp.login_args == ("sender@gmail.com", "app-password")
     assert smtp.sent is message
-

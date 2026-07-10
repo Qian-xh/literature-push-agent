@@ -6,7 +6,6 @@ from src.dedup import paper_key
 from src.models import Delivery, History, Paper, RecommendationRecord, Slot
 from src.ranking import rank_papers, relevance_score
 
-
 TODAY = date(2026, 7, 10)
 
 
