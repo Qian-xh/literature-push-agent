@@ -16,12 +16,27 @@
       "last_recommended": "2026-07-11",
       "count": 1
     },
+    "doi:10.1016/j.quageo.2010.08.003": {
+      "first_recommended": "2026-07-11",
+      "last_recommended": "2026-07-11",
+      "count": 1
+    },
     "doi:10.1029/2004wr003778": {
       "first_recommended": "2026-07-11",
       "last_recommended": "2026-07-11",
       "count": 1
     },
     "doi:10.1029/2018ms001583": {
+      "first_recommended": "2026-07-11",
+      "last_recommended": "2026-07-11",
+      "count": 1
+    },
+    "doi:10.1029/2018rg000633": {
+      "first_recommended": "2026-07-11",
+      "last_recommended": "2026-07-11",
+      "count": 1
+    },
+    "doi:10.1038/s43017-023-00450-9": {
       "first_recommended": "2026-07-11",
       "last_recommended": "2026-07-11",
       "count": 1
@@ -92,6 +107,21 @@
       "key": "doi:10.1029/2018ms001583",
       "date": "2026-07-11",
       "slot": "afternoon"
+    },
+    {
+      "key": "doi:10.1016/j.quageo.2010.08.003",
+      "date": "2026-07-11",
+      "slot": "evening"
+    },
+    {
+      "key": "doi:10.1038/s43017-023-00450-9",
+      "date": "2026-07-11",
+      "slot": "evening"
+    },
+    {
+      "key": "doi:10.1029/2018rg000633",
+      "date": "2026-07-11",
+      "slot": "evening"
     }
   ]
 }
