@@ -1,12 +1,27 @@
 {
   "version": 1,
   "ever_recommended": {
+    "doi:10.1002/hyp.6998": {
+      "first_recommended": "2026-07-11",
+      "last_recommended": "2026-07-11",
+      "count": 1
+    },
     "doi:10.1007/s11104-026-08822-y": {
       "first_recommended": "2026-07-11",
       "last_recommended": "2026-07-11",
       "count": 1
     },
     "doi:10.1007/s44372-026-00708-8": {
+      "first_recommended": "2026-07-11",
+      "last_recommended": "2026-07-11",
+      "count": 1
+    },
+    "doi:10.1029/2004wr003778": {
+      "first_recommended": "2026-07-11",
+      "last_recommended": "2026-07-11",
+      "count": 1
+    },
+    "doi:10.1029/2018ms001583": {
       "first_recommended": "2026-07-11",
       "last_recommended": "2026-07-11",
       "count": 1
@@ -62,6 +77,21 @@
       "key": "doi:10.21203/rs.3.rs-10135102/v1",
       "date": "2026-07-11",
       "slot": "morning"
+    },
+    {
+      "key": "doi:10.1002/hyp.6998",
+      "date": "2026-07-11",
+      "slot": "afternoon"
+    },
+    {
+      "key": "doi:10.1029/2004wr003778",
+      "date": "2026-07-11",
+      "slot": "afternoon"
+    },
+    {
+      "key": "doi:10.1029/2018ms001583",
+      "date": "2026-07-11",
+      "slot": "afternoon"
     }
   ]
 }
