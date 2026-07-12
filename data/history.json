@@ -41,9 +41,24 @@
       "last_recommended": "2026-07-11",
       "count": 1
     },
+    "doi:10.1093/aob/mcag203": {
+      "first_recommended": "2026-07-12",
+      "last_recommended": "2026-07-12",
+      "count": 1
+    },
+    "doi:10.18089/tms.20260205": {
+      "first_recommended": "2026-07-12",
+      "last_recommended": "2026-07-12",
+      "count": 1
+    },
     "doi:10.21203/rs.3.rs-10135102/v1": {
       "first_recommended": "2026-07-11",
       "last_recommended": "2026-07-11",
+      "count": 1
+    },
+    "doi:10.25258/ijddt.16.66s.74": {
+      "first_recommended": "2026-07-12",
+      "last_recommended": "2026-07-12",
       "count": 1
     },
     "doi:10.3389/fpls.2026.1862550": {
@@ -122,6 +137,21 @@
       "key": "doi:10.1029/2018rg000633",
       "date": "2026-07-11",
       "slot": "evening"
+    },
+    {
+      "key": "doi:10.25258/ijddt.16.66s.74",
+      "date": "2026-07-12",
+      "slot": "morning"
+    },
+    {
+      "key": "doi:10.18089/tms.20260205",
+      "date": "2026-07-12",
+      "slot": "morning"
+    },
+    {
+      "key": "doi:10.1093/aob/mcag203",
+      "date": "2026-07-12",
+      "slot": "morning"
     }
   ]
 }
